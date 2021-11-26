@@ -37,7 +37,7 @@ class CSVFile:
 class NumericalCSVFile(CSVFile):
 
     def get_data(self):
-        all_data = super.get_data()
+        all_data = super().get_data()
 
         for item in all_data:
             item[1] = float(item[1])
@@ -45,7 +45,7 @@ class NumericalCSVFile(CSVFile):
         return all_data
         
 
-myfile = CSVFile('shampoo_sales.csv')
+myfile = NumericalCSVFile("shampoo_sales.csv")
 #print(myfile)
 #print(myfile.name)
 print(*myfile.get_data(), sep = '\n')
