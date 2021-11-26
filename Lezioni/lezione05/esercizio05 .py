@@ -33,9 +33,19 @@ class CSVFile:
         #chiudo il file e ritorno all_data
         file_csv.close()
         return all_data
+
+class NumericalCSVFile(CSVFile):
+
+    def get_data(self):
+        all_data = super.get_data()
+
+        for item in all_data:
+            item[1] = float(item[1])
+        
+        return all_data
         
 
-myfile = CSVFile('nome_non_esistente.csv')
+myfile = CSVFile('shampoo_sales.csv')
 #print(myfile)
 #print(myfile.name)
 print(*myfile.get_data(), sep = '\n')
