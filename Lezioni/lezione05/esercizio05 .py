@@ -25,7 +25,7 @@ class CSVFile:
         #guardo il file linea per linea
         for line in file_csv:
             #la salvo in all_data, con le modifiche del caso
-            line = line.strip('\n')
+            line = line.strip('\n')   #
             elemento = line.split(',')
             if(elemento[0] != 'Date'):
                 all_data.append(elemento)
@@ -37,15 +37,46 @@ class CSVFile:
 class NumericalCSVFile(CSVFile):
 
     def get_data(self):
-        all_data = super().get_data()
+        #predo la lista di liste della classe genitrice
+        all_data_float = super().get_data()
 
-        for item in all_data:
-            item[1] = float(item[1])
-        
-        return all_data
+        #lista in cui ci sono gli indici j che devono essere poppati
+        bleah = []
+
+        #considero una lista alla volta
+        for j, item in enumerate(all_data_float):
+            #in ogni lista prendo il primo elemento e il suo indice
+            for i, elemento in enumerate(item):
+                if(i != 0):
+                    try:
+                        #converto in float
+                        #print(elemento)
+                        #print(item[i])
+                        #print(type(elemento))
+                        #print(type(item[i]))
+                        item[i] = float(elemento)
+
+                    except ValueError:
+                        print("Errore di TIPO: 'elemento' non può essere convertito in un float")
+                        print("Tipo 'elemento': {}".format(type(elemento)))
+                        print('"elemento" =  "{}"'.format(elemento))
+                        bleah.append(j)  
+                    except Exception as e:
+                        print("Errore generico: 'elemento' non può essere convertito in un float")
+                        print('"elemento" =  "{}"'.format(elemento))
+                        bleah.append(j)
+
+        bleah.reverse()
+        for riga in bleah:
+            all_data_float.pop(riga)
+
+        return all_data_float
         
 
 myfile = NumericalCSVFile("shampoo_sales.csv")
 #print(myfile)
 #print(myfile.name)
 print(*myfile.get_data(), sep = '\n')
+#for item in myfile.get_data():
+#    for i in item:
+#        print(type(i))
