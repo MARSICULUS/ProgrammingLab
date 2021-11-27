@@ -50,18 +50,16 @@ class NumericalCSVFile(CSVFile):
                 if(i != 0):
                     try:
                         #converto in float
-                        #print(elemento)
-                        #print(item[i])
-                        #print(type(elemento))
-                        #print(type(item[i]))
                         item[i] = float(elemento)
 
                     except ValueError:
+                        print('----------')
                         print("Errore di TIPO: 'elemento' non può essere convertito in un float")
                         print("Tipo 'elemento': {}".format(type(elemento)))
                         print('"elemento" =  "{}"'.format(elemento))
                         bleah.append(j)  
                     except Exception as e:
+                        print('----------')
                         print("Errore generico: 'elemento' non può essere convertito in un float")
                         print('"elemento" =  "{}"'.format(elemento))
                         bleah.append(j)
