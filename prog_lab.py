@@ -1,35 +1,47 @@
 #classe che rappresenta un CSV file 
 class CSVFile:
 
+    #metodo per sapere il numero di righe totali del file
+    def __conta_righe__(self, nome_file):
+        my_file = open(nome_file, 'r')
+        #contatore
+        i = 0
+        #scorro il file riga per riga
+        for line in my_file:
+            #ad ogni ciclo aggiungo uno al contatore
+            i = i + 1
+        #returno il contatore
+        return i
+
     #funzioni per inizializzare le variabili
-    def __inizializzazione__(self, nome_file, start, end):
+    def __inizializzazione__(self, nome_file):
+        #nome
         self.name = nome_file
+        #titolo del file
         my_file = open(self.name, 'r')
         self.title = my_file.readline()
         my_file.close()
-        self.start = start
-        self.end = end
+        #numero di righe del file
+        self.n_righe = self.__conta_righe__(self.name)
 
-    def __inizializzazione_defoult__():
+    #in caso di errori si usa un opzione di default
+    def __inizializzazione_defoult__(self):
         self.name = 'shampoo_sales_default.csv'
         self.title = 'Data,Sales'
         self.start = 1
         self.end = 1
+        self.righe = 2
   
     #metodo __init__ determina il nome del file e il titolo
-    def __init__(self, nome_file, start = None, end = None):
+    def __init__(self, nome_file):
         #controllo se l'input sia una stringa
         if type(nome_file) != str:
-            #altrimenti raiso un errore di tipo generico
+            #se non lo è raiso un errore generico
             raise Exception ('\nIl nome del fle non è una stringa\n    nome_file = "{}"'.format(nome_file))
-        #controllo se start e end hanno vallri corretti
-        #se start è minore di end
-        #se start è maggiore di zero e minore del numero massimo delle righe del file
-        #se end è più piccolo del numero massimo delle righe di un file
-        
+                
         try:            
             #inizializzo nome e titolo del file
-            self.__inizializzazione__(nome_file, start, end)
+            self.__inizializzazione__(nome_file)
         except FileNotFoundError:
             print('---lol---')
             print('Il file non è stato TROVATO')
@@ -46,68 +58,46 @@ class CSVFile:
     def __str__(self):
         #return nome del file e titolo
         return '_______\nNome file: {}\nTitolo: {}'.format(self.name, self.title)
-    
+
+
     #metodo get_data() restituisce una lista di liste che rappresentano le righe
-    def get_data(self):
-        #se è stato inserito start e end
-        if self.start is not None and self.end is not None:
-            #aprire il file
-            my_file = open(self.name, 'r')
-            all_data = []
-            #considerare riga per riga il file
-            for i, line in enumerate(my_file):
-                #se la i è fra start e end
-                    if i + 1 >= self.start and i + 1 <= self.end:
-                        #elimino\n nella linea
-                        line = line.strip('\n')
-                        #se non è la prima riga
-                        if(i != 0):
-                            #lista che contiene linea divisa dalle virgole
-                            line_data = line.split(',')
-                            #se la linea non è vuota
-                            if(line_data[0] != ''):
-                                #aggiungere questa lista in una lista che rappresenta tutto il file
-                                all_data.append(line_data)
-        #se è stato inserito solo start
-        elif self.start is not None and self.end is None:
-            #aprire il file
-            my_file = open(self.name, 'r')
-            all_data = []
-            #considerare riga per riga il file
-            for i, line in enumerate(my_file):
-                #se la i è fra start e end
-                    if i + 1 >= self.start:
-                        #elimino\n nella linea
-                        line = line.strip('\n')
-                        #se non è la prima riga
-                        if(i != 0):
-                            #lista che contiene linea divisa dalle virgole
-                            line_data = line.split(',')
-                            #se la linea non è vuota
-                            if(line_data[0] != ''):
-                                #aggiungere questa lista in una lista che rappresenta tutto il file
-                                all_data.append(line_data)
-        else:
-            #aprire il file
-            my_file = open(self.name, 'r')
-            all_data = []
-            #considerare riga per riga il file
-            for i, line in enumerate(my_file):
-                #elimino\n nella linea
-                line = line.strip('\n')
-                #se non è la prima riga
-                if(i != 0):
-                    #lista che contiene linea divisa dalle virgole
-                    line_data = line.split(',')
-                    #se la linea non è vuota
-                    if(line_data[0] != ''):
-                        #aggiungere questa lista in una lista che rappresenta tutto il file
-                        all_data.append(line_data)
+    def get_data(self, start = None, end = None):
+        #aprire il file
+        my_file = open(self.name, 'r')
+        all_data = []
+
+        #controllo se start e end hanno vallri corretti
+        #se start è minore di end
+        #se start è maggiore di zero e minore del numero massimo delle righe del file
+        #se end è più piccolo del numero massimo delle righe di un file
+
+        #trasformo le variabili di start e end così le posso usare in ogni caso
+        #se start e end non è inserito
+        if start is None and end in None:
+            start = 0
+            #end = linee totali del file
+        #se start è inserito e end non è inserito
+        #se nessuno dei due sono inseriti
+
+        #considerare riga per riga il file
+        for i, line in enumerate(my_file):
+            #elimino\n nella linea
+            line = line.strip('\n')
+            #se non è la prima riga ed è in range(start, end)
+            if i in range(start, end) and i != 0:
+                #lista che contiene linea divisa dalle virgole
+                line_data = line.split(',')                    
+                #se la linea non è vuota
+                if(line_data[0] != ''):
+                    #aggiungere questa lista in una lista che rappresenta tutto il file
+                    all_data.append(line_data)
             
         #chidere il file
         my_file.close()
         #restuire la lista del file
         return all_data
+
+        ##forse si può fare con il get data() veccio e poi tagliare le parti che non ci piacciono, me è più lungo
 
     def get_date(self):
         all_data = self.get_data()
@@ -125,9 +115,9 @@ class CSVFile:
 class NumericalCSVFile(CSVFile):
     
     #metodo get_data() trasforma in float tutte le coloe tranne la prima
-    def get_data(self):
+    def get_data(self, start = None, end = None):
         #prende in considerazione la lista di lista di super.get_data()
-        all_floatydata = super().get_data()
+        all_floatydata = super().get_data(start, end)
         #lista per la gestione degli errori
         trash = []
         #la scorre lista per lista
@@ -161,7 +151,7 @@ class NumericalCSVFile(CSVFile):
         #return la nuova lista
         return all_floatydata
 
-myfile = CSVFile('shampoo_sales.csv', 10, 13)
+myfile = CSVFile('shampoo_sales.csv')
 print(myfile)
 print(*myfile.get_data(), sep = '\n')
 
