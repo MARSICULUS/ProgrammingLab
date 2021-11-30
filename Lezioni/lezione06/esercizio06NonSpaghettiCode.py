@@ -1,0 +1,1 @@
+#posso lasciare la get data normale ma poi cancellare le righ che non voglio
