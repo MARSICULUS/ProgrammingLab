@@ -19,7 +19,7 @@ class CSVFile:
         self.name = nome_file
         #titolo del file
         my_file = open(self.name, 'r')
-        self.title = my_file.readline()
+        self.title = my_file.readline().strip()
         my_file.close()
         #numero di righe del file
         self.n_righe = self.__conta_righe__(self.name)
@@ -73,18 +73,20 @@ class CSVFile:
 
         #trasformo le variabili di start e end così le posso usare in ogni caso
         #se start e end non è inserito
-        if start is None and end in None:
-            start = 0
-            #end = linee totali del file
+        if start is None:
+            start = 1
+            end = self.__conta_righe__(self.name)
         #se start è inserito e end non è inserito
-        #se nessuno dei due sono inseriti
+        elif start is not None and end is None:
+            end = self.__conta_righe__(self.name)
+        #se sono entrambi inseriti non sono necessarie modifiche
 
         #considerare riga per riga il file
         for i, line in enumerate(my_file):
             #elimino\n nella linea
             line = line.strip('\n')
             #se non è la prima riga ed è in range(start, end)
-            if i in range(start, end) and i != 0:
+            if i in range(start - 1, end) and i != 0:
                 #lista che contiene linea divisa dalle virgole
                 line_data = line.split(',')                    
                 #se la linea non è vuota
@@ -151,10 +153,11 @@ class NumericalCSVFile(CSVFile):
         #return la nuova lista
         return all_floatydata
 
-myfile = CSVFile('shampoo_sales.csv')
+myfile = CSVFile(4)
 print(myfile)
 print(*myfile.get_data(), sep = '\n')
+#print(myfile.__conta_righe__('shampoo_sales.csv'))
 
-#myfile = NumericalCSVFile("shampoo_sales.csv")
-#print(myfile)
-#print(*myfile.get_data(), sep = '\n')
+myfile = NumericalCSVFile("shampoo_sales_messed_up.csv")
+print(myfile)
+print(*myfile.get_data(3, 20), sep = '\n')
