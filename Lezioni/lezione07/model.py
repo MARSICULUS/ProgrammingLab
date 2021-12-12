@@ -1,10 +1,4 @@
-def sottrazione_lista(l1, l2):
-    l_sott =[]
-    for item in l1:
-        if item not in l2:
-            l_sott.appen(item)
-    
-    return l_sott
+from matplotlib import pyplot
 
 class Model():
     def fit(self, data):
@@ -41,10 +35,14 @@ class IncrementalModel(Model):
 class FitIncrementalModel(IncrementalModel):
 
     def predict(self, data):
-        data_last_3moth = data
+        #faccio un array
+        data_last_3moth = []
+        for item in data:
+            data_last_3moth.append(item)
+
         while len(data_last_3moth) > 3:
             data_last_3moth.pop(0)
-        
+
         incr_last_moth = self.incremento_medio(data_last_3moth)
 
         global_incr_medio = (self.global_agv_increment + incr_last_moth) / 2
@@ -63,12 +61,18 @@ class FitIncrementalModel(IncrementalModel):
         return incr_first_moth
 
 pippo = FitIncrementalModel()
-data = [8, 19, 31, 41, 50, 52, 60]
+dati = [8, 19, 31, 41, 50, 52, 60]
 
-print(pippo.fit(data))
-print(pippo.predict(data))
+print(pippo.fit(dati))
+print(dati)
+dati.append(pippo.predict(dati))
+print(dati)
 
-from matplotlib import pyplot
-pyplot.plot(data + pippo.predict(data), color='tab:red')
-pyplot.plot(data, color='tab:blue')
+
+print('halo?')
+pyplot.plot(dati + [pippo.predict(dati)], color='tab:red')
+pyplot.plot(dati, color='tab:blue')
 pyplot.show()
+print('halo?')
+print(pippo.fit(dati))
+dati.append(pippo.predict(dati))
