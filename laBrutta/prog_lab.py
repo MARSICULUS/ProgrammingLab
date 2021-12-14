@@ -153,7 +153,7 @@ class NumericalCSVFile(CSVFile):
         #return la nuova lista
         return all_floatydata
 
-myfile = CSVFile(4)
+myfile = CSVFile('shampoo_sales.csv')
 print(myfile)
 print(*myfile.get_data(), sep = '\n')
 #print(myfile.__conta_righe__('shampoo_sales.csv'))

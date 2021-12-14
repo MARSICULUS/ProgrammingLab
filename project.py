@@ -1,5 +1,5 @@
 #Se devo salvare errori particolari, non l'ho usata per adesso!!
-class ErroreAida(Execption):
+class ErroreAida(Exception):
     pass
 
 """ 
@@ -32,8 +32,11 @@ get_dates
 """
 class CSVFile:
 
-    def __init__(self):
-        pass
+    def __init__(self, nome_file):
+        self.name = nome_file
+        self.title = None
+        self.righe = None
+        self.can_read = None
     
     #presentazione del file
     def __str__(self):
