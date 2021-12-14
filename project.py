@@ -47,9 +47,6 @@ class CSVFile:
         #se passa il test allora setto in nome
         if t_input:
             self.name = nome_file
-        #altrimenti il file non si può leggere
-        else:
-            self.can_read = False
 
         #CAN_READ
         #Controllo se esiste il file
@@ -62,8 +59,10 @@ class CSVFile:
                 self.can_read = True
             except FileNotFoundError:
                 #Se non esiste dico che non si può aprire
-                print('\nlol\nIl file "{}" non è stato TROVATO'.format(self.name))
+                raise FileNotFoundError('\nlol\nIl file "{}" non è stato TROVATO'.format(self.name))
                 self.can_read = False
+        else:
+            self.can_read = False
 
         #TITOLO e RIGHE
         #Quando il file si può leggere controllo se non è vuoto
@@ -79,7 +78,6 @@ class CSVFile:
             else:
                 t_pieno = False
             my_file.close()
-        
         #Quando il file non si può leggere o è vuoto
         if not self.can_read or not t_pieno:
             self.title = None
