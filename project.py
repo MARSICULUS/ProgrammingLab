@@ -62,7 +62,7 @@ class CSVFile:
                 self.can_read = True
             except FileNotFoundError:
                 #Se non esiste dico che non si può aprire
-                print('il file "{}" non è stato TROVATO'.format(self.name))
+                print('\nlol\nIl file "{}" non è stato TROVATO'.format(self.name))
                 self.can_read = False
 
         #TITOLO e RIGHE
