@@ -25,9 +25,7 @@ class TestCSVFile(unittest.TestCase):
         self.assertTrue(test_file.can_read)
 
         #Con un file inesistente
-        test_file = CSVFile('file_inesistente.csv')
-        self.assertFalse(test_file.can_read)
-        self.assertRaises(FileNotFoundError, CSVFile.__init__(self,'file_insesistente.csv'))
+        self.assertFalse(CSVFile('file_inesistente.csv').can_read)
 
         #Con un file vuoto
         test_file = CSVFile('file_vuoto.csv')
@@ -49,7 +47,7 @@ class TestCSVFile(unittest.TestCase):
 
         #Con un file insesistente
         test_file = CSVFile('file_inesistente.csv')
-        self.assertException(FileNotFoundError)
+        self.assertR(FileNotFoundError)
 
         #Con un file vuoto
         test_file = CSVFile('file_vuoto.csv')
