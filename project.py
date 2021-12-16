@@ -59,7 +59,7 @@ class CSVFile:
                 self.can_read = True
             except FileNotFoundError:
                 #Se non esiste dico che non si può aprire
-                raise FileNotFoundError('\nlol\nIl file "{}" non è stato TROVATO'.format(self.name))
+                print('\n-lol-\nIl file "{}" non è stato TROVATO'.format(self.name))
                 self.can_read = False
         else:
             self.can_read = False
@@ -110,3 +110,9 @@ Classe NumericalCSVFile
 """
 Modello
 """
+
+#==================?========
+#    CORPO DEL PROGRAMMA
+#===========================
+
+file = CSVFile('file_che_non_ce.csv')

@@ -4,12 +4,12 @@ from project import CSVFile
 """
 NOTE (DA CANCELLARE)
 
-        self.assertException(FileNotFoundError)
+Con asserRaises controllo se viene fatta salire un eccezione ovvero controllo che il codice si pianta
 
-        # check that s.split fails when the separator is not a string
-        ##        with self.assertRaises(TypeError):
-        #    s.split(2)
+Se voglio controllare che il codice non si pianta immagino che devo controllare che l'eccezione viene gestita correttamente
 
+consiglio abdula
+sanitizzazione dell'input prima della gestione dell'errore
 """
 
 class TestCSVFile(unittest.TestCase):
@@ -27,6 +27,7 @@ class TestCSVFile(unittest.TestCase):
         #Con un file inesistente
         test_file = CSVFile('file_inesistente.csv')
         self.assertFalse(test_file.can_read)
+        self.assertRaises(FileNotFoundError, CSVFile.__init__(self,'file_insesistente.csv'))
 
         #Con un file vuoto
         test_file = CSVFile('file_vuoto.csv')
