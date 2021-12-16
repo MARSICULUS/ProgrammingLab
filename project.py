@@ -6,29 +6,33 @@ class ErroreAida(Exception):
 Classe CSVFile
 Serve per leggere una classe CSV file
 
--attributi-
+---attributi---
 self.name -> nome del file
 self.title -> intestazione del file
 self.righe -> numero di righe del file
-self.can_read -> se esiste il nome del file
+self.can_read -> se il file esiste ed è leggibile(non vuoto)
 
--metodi-
+---metodi---
 __init__
     inizializza tutte gli attributi
 
 __str__
     rappresentazione del file
     titolo, intestazione e numero di righe
+    #NON IMPLEMENTATO
 
 __conta_righe__
     conta quante righe ci sono in un file
     non conta righe vuote
+    #NON IMPLEMENTATO
 
 get_data
     ritorna una lista di liste, le liste più piccole contengono le righe nelle quali ogni elemento rappresenta una colonna
+    #NON IMPLEMENTATO
 
 get_dates
     converte la lista di liste di get_data in una lista di liste, dove le date sono effettivamente l'oggetto datatime
+    #NON IMPLEMENTATO
 """
 class CSVFile:
 
@@ -36,20 +40,16 @@ class CSVFile:
 
         #NOME del file
         #Controlo Se il nome è una stringa che finisce per .csv
-        if type(nome_file) == str:
-            if nome_file[-4:] == '.csv':
-                t_input = True
-            else:
-                t_input = False
+        if type(nome_file) == str and nome_file[-4:] == '.csv':
+            t_input = True
         else:
             t_input = False
         
-        #se passa il test allora setto in nome
-        if t_input:
-            self.name = nome_file
+        #Setto in nome
+        self.name = nome_file
 
         #CAN_READ
-        #Controllo se esiste il file
+        #Controllo se il nome del file è corretto
         if t_input:
             try:
                 #provo ad aprirlo
@@ -61,7 +61,7 @@ class CSVFile:
                 #Se non esiste dico che non si può aprire
                 #così nei test il messaggio di errore non viene visto
                 if __name__ == '__main__':
-                    print('\n-lol-\nIl file "{}" non è stato TROVATO'.format(self.name))
+                    print('\n-lol-\nIl file "{}" non è stato TROVATO\n-lol-\n'.format(self.name))
                 self.can_read = False
         else:
             self.can_read = False
@@ -69,10 +69,12 @@ class CSVFile:
         #TITOLO e RIGHE
         #Quando il file si può leggere controllo se non è vuoto
         if self.can_read:
+            #Apro il file e prendo il titolo
             my_file = open(self.name, 'r')
             titolo = my_file.readline().strip()
+            seconda_riga = my_file.readline().strip()
             #se il file non è vuoto
-            if titolo != '':
+            if titolo != '' and seconda_riga != '':
                 t_pieno = True
                 #setto il titotlo e il numero di righe
                 self.title = titolo
@@ -87,7 +89,16 @@ class CSVFile:
              
     #Presentazione del file
     def __str__(self):
-        pass
+
+        #Se il file è leggibile o è vuoto
+        if self.can_read and self.righe > 0:
+            return '[----------]\n{}\n    {}\n    numero righe: {}\n'.format(self.name, self.title, self.righe)
+        #Se il file è leggibile ed è vuoto (non viene visualizzato il titolo)
+        elif self.can_read and self.righe == 0:
+            return '[----------]\n{}\n    numero righe: {}\n'.format(self.name, self.righe)
+        else:
+            return '[----------]\n"{}" non è stato TROVATO\n'.format(self.name)
+             
 
     def __conta_righe__(self):
         my_file = open(self.name, 'r')
@@ -116,3 +127,6 @@ Modello
 #==========================
 #    CORPO DEL PROGRAMMA
 #===========================
+
+my_file = CSVFile('lol.csv')
+print(my_file)
