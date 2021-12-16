@@ -1,3 +1,5 @@
+from datetime import datetime
+
 #classe che rappresenta un CSV file 
 class CSVFile:
 
@@ -105,7 +107,7 @@ class CSVFile:
         all_data = self.get_data()
         all_date = []
         for item in all_data:
-            print(line)
+            print(item)
             #la data la trasformo in un data_object
             tempo = datetime.strptime(item[0], "%d-%m-%Y")
             all_date.append(tempo)
@@ -161,3 +163,4 @@ print(*myfile.get_data(), sep = '\n')
 myfile = NumericalCSVFile("shampoo_sales_messed_up.csv")
 print(myfile)
 print(*myfile.get_data(3, 20), sep = '\n')
+print(myfile.get_date())

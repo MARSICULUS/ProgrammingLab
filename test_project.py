@@ -53,10 +53,13 @@ class TestCSVFile(unittest.TestCase):
         self.assertEqual(test_file.__str__(), '[----------]\nfile_vuoto.csv\n    numero righe: 0\n')
     
     def test_get_data(self):
-        raise Exception('Test non ancora IMPLEMENTATO')
+        data =  [['01-01-2012','100.0'],['01-02-2012','200.0'],['01-03-2012','300.0'],['01-04-2012','400.0'],['01-05-2012','500.0'],['01-06-2012','600.0'],['01-07-2012','700.0'],['01-08-2012','800.0'],['01-09-2012','900.0'],['01-10-2012','100.1'],['01-11-2012','100.2'],['01-12-2012','100.3']]
+        self.assertEqual(CSVFile('file_prova_dati.csv').get_data(), data)
 
     def test_get_dates(self):
         raise Exception('Test non ancora IMPLEMENTATO')
 
     def test_conta_righe(self):
-        raise Exception('Test non ancora IMPLEMENTATO')
+        self.assertEqual(CSVFile('shampoo_sales.csv').__conta_righe__(), 36)
+        self.assertEqual(CSVFile('file_prova_dati.csv').__conta_righe__(), 12)
+        self.assertEqual(CSVFile('file_vuoto.csv').__conta_righe__(), 0)
