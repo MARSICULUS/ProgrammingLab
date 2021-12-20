@@ -1,5 +1,9 @@
-from vero import conversione
+#from vero import conversione
 from vero import AidaError
+from vero import Prova
+prova = Prova()
+return prova.conversione()
+
 import unittest
 
 class TestVero(unittest.TestCase):
@@ -9,7 +13,7 @@ class TestVero(unittest.TestCase):
         print('fine test1')
 
     def test_convertitore(self):
-        self.assertEqual(conversione('lol'), None)
+        self.assertRaises(AidaError, conversione, 'lol')
 
     def test_convertitore_migliorato(self):
         self.assertEqual(1, 1)
