@@ -5,7 +5,7 @@ from project import FileVuoto
 """
 NOTE (DA CANCELLARE)
 
-Con asserRaises controllo se viene fatta salire un eccezione ovvero controllo che il codice si pianta
+Con assertRaises controllo se viene fatta salire un eccezione ovvero controllo che il codice si pianta
 
 Se voglio controllare che il codice non si pianta immagino che devo controllare che l'eccezione viene gestita correttamente
 
@@ -56,14 +56,15 @@ class TestCSVFile(unittest.TestCase):
     def test_get_data(self):
         data =  [['01-01-2012','100.0'],['01-02-2012','200.0'],['01-03-2012','300.0'],['01-04-2012','400.0'],['01-05-2012','500.0'],['01-06-2012','600.0'],['01-07-2012','700.0'],['01-08-2012','800.0'],['01-09-2012','900.0'],['01-10-2012','100.1'],['01-11-2012','100.2'],['01-12-2012','100.3']]
         self.assertEqual(CSVFile('file_prova_dati.csv').get_data(), data)
-        test_file = CSVFile('file_vuoto.csv')
-        self.assertRaises(FileVuoto, test_file.get_data(), )
+        try:
+            CSVFile('file_vuoto.csv').get_data()
+        except FileVuoto:
+            self.assertTrue(True)
         self.assertEqual(CSVFile('file_prova_dati.csv').get_data(6), data[5:])
         self.assertEqual(CSVFile('file_prova_dati.csv').get_data(3, 10), data[2:9])
 
     def test_get_dates(self):
-        #raise Exception('Test non ancora IMPLEMENTATO')
-        pass
+        self.assertEqual(CSVFile('random_file.csv').get_dates(), [])
 
     def test_conta_righe(self):
         self.assertEqual(CSVFile('shampoo_sales.csv').__conta_righe__(), 36)

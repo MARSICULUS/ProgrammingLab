@@ -148,6 +148,7 @@ class CSVFile:
         
         else:
             raise FileVuoto('Il file è ILLEGGIBILE\n       quindi non è stato possibile leggere i dati\n')
+            return None
       
     
     def get_dates(self, start = None, end = None):
@@ -160,7 +161,8 @@ class CSVFile:
                 item[0] = tempo
                 all_date.append(item)
             except ValueError:
-                print('La CONVERSIONE in data della riga {} non ha avuto sucesso\n    contenuto prima colonna: {}'.format(i, item[0]))
+                if __name__ == '__main__':
+                    print('La CONVERSIONE in data della riga {} non ha avuto sucesso\n    contenuto prima colonna: {}'.format(i, item[0]))
 
         
         return all_date 
@@ -168,6 +170,12 @@ class CSVFile:
 
 """ 
 Classe NumericalCSVFile
+
+Estende la classe CSVFile, e sovrascrive il metodo get_data e get_dates
+
+--metodi--
+get_data e get_dates: etrambi riprendono la lista ritornata dalla classe madre ma tutti gli elementi della seconda colonna in poi sono convertiti in float 
+
 """
 
 """
@@ -178,6 +186,24 @@ Modello
 #    CORPO DEL PROGRAMMA
 #===========================
 
-#my_file = CSVFile('shampoo_sales.csv')
-#print(my_file)
-#print(*my_file.get_dates(), sep = '\n')
+"""
+my_file = CSVFile('file_prova_dati.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('random_file.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('shampoo_sales.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('shampoo_sales_messed_up.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('file_vuoto.csv')
+print(my_file)
+#print(*my_file.get_data(), sep = '\n')
+"""
