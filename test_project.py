@@ -1,6 +1,7 @@
 import unittest
 from project import CSVFile
 from project import FileVuoto
+from project import NumericalCSVFile
 
 """
 NOTE (DA CANCELLARE)
@@ -70,3 +71,11 @@ class TestCSVFile(unittest.TestCase):
         self.assertEqual(CSVFile('shampoo_sales.csv').__conta_righe__(), 36)
         self.assertEqual(CSVFile('file_prova_dati.csv').__conta_righe__(), 12)
         self.assertEqual(CSVFile('file_vuoto.csv').__conta_righe__(), 0)
+
+    #--
+    #NumericalCSVFile
+    #--
+    
+    def test_get_floaty_data(self):
+        data = [['01-01-2012',100.0],['01-02-2012',200.0],['01-03-2012',300.0],['01-04-2012',400.0],['01-05-2012',500.0],['01-06-2012',600.0],['01-07-2012',700.0],['01-08-2012',800.0],['01-09-2012',900.0],['01-10-2012',100.1],['01-11-2012',100.2],['01-12-2012',100.3]]
+        self.assertEqual(NumericalCSVFile('file_prova_dati.csv').get_data(), data)   

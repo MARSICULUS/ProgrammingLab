@@ -151,10 +151,9 @@ class CSVFile:
             return None
       
     
-    def get_dates(self, start = None, end = None):
-        all_data = self.get_data()
+    def __get_magic_dates__(self, data):
         all_date = []
-        for i, item in enumerate(all_data):
+        for i, item in enumerate(data):
             #la data la trasformo in un data_object
             try:
                 tempo = datetime.strptime(item[0], "%d-%m-%Y")
@@ -164,8 +163,12 @@ class CSVFile:
                 if __name__ == '__main__':
                     print('La CONVERSIONE in data della riga {} non ha avuto sucesso\n    contenuto prima colonna: {}'.format(i, item[0]))
 
-        
-        return all_date 
+        return all_date
+
+    def get_dates(self, start = None, end = None):
+        all_data = self.get_data(start, end)
+        return self.__get_magic_dates__(all_data)
+         
     
 
 """ 
@@ -177,6 +180,54 @@ Estende la classe CSVFile, e sovrascrive il metodo get_data e get_dates
 get_data e get_dates: etrambi riprendono la lista ritornata dalla classe madre ma tutti gli elementi della seconda colonna in poi sono convertiti in float 
 
 """
+class NumericalCSVFile(CSVFile):
+    
+    def get_data(self, start = None, end = None):
+        #se il file è leggibile:
+        if self.can_read is True:
+            #Prende l'output della funzione madre
+            all_data = super().get_data(start, end)
+            all_floaty_data = []
+
+            #Scorre riga per riga l'output
+            for line in all_data:
+                #lita vuota (sarà la riga di float)
+                floaty_line = []
+
+                #Scorro elemento per elemento nella riga:
+                for i, elem in enumerate(line):
+                    #flag
+                    tutti_gli_elem = True
+
+                    #se è il primo elemento salvalo nella lista
+                    if i == 0:
+                        floaty_line.append(elem)
+                    #altrimenti
+                    else:
+                        try:
+                            #a trasformare ogni elemento in float
+                            floaty_elem = float(elem)
+                            floaty_line.append(floaty_elem)
+                        except ValueError:
+                            if __name__ == '__main__':
+                                #il numero della riga viene salvato in una lista a parte
+                                #esco dal ciclo
+                                print('Il elemento "{}" non è possibile convertirlo in un float, la riga viene saltata'.format(elem))
+                                tutti_gli_elem = False
+                                break
+                
+                if tutti_gli_elem:
+                    all_floaty_data.append(floaty_line)
+            
+            #ritorna l'out put
+            return all_floaty_data
+        
+        #altrimenti restituisci None
+        return None
+    
+    def get_dates(self, start = None, end = None):
+        all_floaty_data = self.get_data(start, end)
+        return super().__get_magic_dates__(all_floaty_data)
 
 """
 Modello
