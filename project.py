@@ -269,7 +269,7 @@ class IncrementalModel(Model):
     #l'incremento medio di tutti i dati più l'ultimo dato
     def predict(self, data):
 
-        incr_medio = super().incremento_medio(data)
+        incr_medio = super().incremento_medio(data[-3:])
         prediction = data[-1] + incr_medio
         return prediction
 
@@ -277,10 +277,7 @@ class FitIncrementalModel(IncrementalModel):
 
     def fit(self, data):
         #Considero tutti i dati tranne quelli degli ultimi tre mesi(ultimi tre dati)
-        data_first_moth = []
-        lun = len(data)
-        for i in range(lun - 3):
-            data_first_moth.append(data[i])
+        data_first_moth = data[:-3]
         
         #Calcolo l'incremento medio dei primi mesi
         incr_first_moth = self.incremento_medio(data_first_moth)
@@ -290,13 +287,12 @@ class FitIncrementalModel(IncrementalModel):
 
     def predict(self, data):
         #Prendo i dati degli ultimi tre mesi
-        index_last_3moth = len(data) - 3
-        data_last_3moth = data[index_last_3moth:]
+        data_last_3moth = data[-3:]
 
         #incremento medio degli ultimi tre mesi
         incr_last_moth = self.incremento_medio(data_last_3moth)
         #media fra gli incrementi medi
-        global_incr_medio = (self.global_agv_increment *  + incr_last_moth) / 2
+        global_incr_medio = (self.global_agv_increment + incr_last_moth) / 2
 
         return data[-1] + global_incr_medio
 
@@ -360,14 +356,14 @@ data_ultimi_12_mesi = just_data[24:]
 print(data_ultimi_12_mesi)
 
 #ogetti modelli
-vendite_shampoo = IncrementalModel()
+#vendite_shampoo = IncrementalModel()
 #print(vendite_shampoo.predict(just_data))
-vendite_lol = FitIncrementalModel()
+#vendite_lol = FitIncrementalModel()
 
 #array di dati con la predict dell'incremental modello
 shampoo = data_24_mesi
 while len(shampoo) != len(just_data):
-    next_dato = vendite_shampoo.predict(shampoo) 
+    next_dato = IncrementalModel().predict(shampoo) 
     shampoo.append(next_dato)
 
 print(shampoo)
@@ -375,8 +371,8 @@ print(shampoo)
 #array di dati con la predict del fit incremental model
 lol = data_24_mesi
 while len(lol) != len(just_data):
-    vendite_lol.fit(lol)
-    next_dato = vendite_lol.predict(lol)
+    FitIncrementalModel().fit(lol)
+    next_dato = FitIncrementalModel().predict(lol)
     lol.append(next_dato)
 
 print(lol)
