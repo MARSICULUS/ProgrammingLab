@@ -1,0 +1,76 @@
+#==========================
+#    CORPO DEL PROGRAMMA
+#===========================
+
+"""
+my_file = CSVFile('file_prova_dati.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('random_file.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('shampoo_sales.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('shampoo_sales_messed_up.csv')
+print(my_file)
+print(*my_file.get_data(), sep = '\n')
+
+my_file = CSVFile('file_vuoto.csv')
+print(my_file)
+#print(*my_file.get_data(), sep = '\n')
+"""
+
+
+my_file = NumericalCSVFile('shampoo_sales.csv')
+#print(my_file.get_data())
+
+#divido i solo il numero di vendite
+just_data = [elem[1] for elem in my_file.get_data()]
+data_24_mesi = just_data[:24]
+data_ultimi_12_mesi = just_data[24:]
+print(data_ultimi_12_mesi)
+
+#ogetti modelli
+#vendite_shampoo = IncrementalModel()
+#print(vendite_shampoo.predict(just_data))
+#vendite_lol = FitIncrementalModel()
+
+#array di dati con la predict dell'incremental modello
+shampoo = data_24_mesi
+while len(shampoo) != len(just_data):
+    next_dato = IncrementalModel().predict(shampoo) 
+    shampoo.append(next_dato)
+
+print(shampoo)
+
+#array di dati con la predict del fit incremental model
+lol = data_24_mesi
+while len(lol) != len(just_data):
+    FitIncrementalModel().fit(lol)
+    next_dato = FitIncrementalModel().predict(lol)
+    lol.append(next_dato)
+
+print(lol)
+
+#gli errori medi
+print('valutazione incrementalmodel')
+errore_medio_shampoo = valutazione(data_ultimi_12_mesi, shampoo[24:])
+print(errore_medio_shampoo)
+
+print('valutazione FitIncrementalmodel')
+errore_medio_lol = valutazione(data_ultimi_12_mesi, lol[24:])
+print(errore_medio_lol)
+
+
+"""
+pyplot.plot(just_data + [vendite_shampoo.predict(just_data)], color = 'tab:red')
+pyplot.plot(just_data + [vendite_lol.predict(just_data)], color = 'tab:green')
+pyplot.plot(just_data, color = 'tab:blue')
+
+pyplot.show()
+"""
+

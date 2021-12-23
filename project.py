@@ -255,6 +255,7 @@ class Model():
             #incrementi
             incrementi = []
 
+            
             for i, item in enumerate(data):
                 if i < lun - 1:
                     incrementi.append(data[i + 1] - data[i])
@@ -263,38 +264,38 @@ class Model():
             incr_medio = sum(incrementi) / len(incrementi)
             return incr_medio
             
-        
-class IncrementalModel(Model):
-    
-    #l'incremento medio di tutti i dati più l'ultimo dato
-    def predict(self, data):
 
-        incr_medio = super().incremento_medio(data[-3:])
-        prediction = data[-1] + incr_medio
+class IncrementalModel(Model):
+
+    #la predizione è l'ultimo dato più l'incremento medio degli ultimi tre mesi
+    def predict(self, data):
+        
+        wanted_data = data[-3:]
+
+        prediction = wanted_data[-1] + super().incremento_medio(wanted_data)
+
         return prediction
 
-class FitIncrementalModel(IncrementalModel):
-
+class FitIncrementalModel(Model):
+    
     def fit(self, data):
-        #Considero tutti i dati tranne quelli degli ultimi tre mesi(ultimi tre dati)
-        data_first_moth = data[:-3]
-        
-        #Calcolo l'incremento medio dei primi mesi
-        incr_first_moth = self.incremento_medio(data_first_moth)
-        self.global_agv_increment = incr_first_moth
-        return incr_first_moth
+        fit_data = data[:-3]
 
+        #incremento medio della prima parte del dataset
+        self.global_agv_increment = super().incremento_medio(fit_data)
+        return self.global_agv_increment
 
     def predict(self, data):
-        #Prendo i dati degli ultimi tre mesi
-        data_last_3moth = data[-3:]
+        
+        predict_data = data[-3:]
 
-        #incremento medio degli ultimi tre mesi
-        incr_last_moth = self.incremento_medio(data_last_3moth)
-        #media fra gli incrementi medi
-        global_incr_medio = (self.global_agv_increment + incr_last_moth) / 2
+        fitted_avrg_incr = (self.global_agv_increment + super().incremento_medio(predict_data)) / 2
 
-        return data[-1] + global_incr_medio
+        return data[-1] + fitted_avrg_incr
+
+"""
+
+class FitIncrementalModel(IncrementalModel):
 
 #data originale e data predict sono entrambe solo le parte di dati che vengono valutate
 def valutazione(data_originale, data_predict):
@@ -318,80 +319,6 @@ def valutazione(data_originale, data_predict):
     else:
         print('Errore:\n   i dati passati a "valutazione" non vanno bene\n')
         return None
-
-#==========================
-#    CORPO DEL PROGRAMMA
-#===========================
-
-"""
-my_file = CSVFile('file_prova_dati.csv')
-print(my_file)
-print(*my_file.get_data(), sep = '\n')
-
-my_file = CSVFile('random_file.csv')
-print(my_file)
-print(*my_file.get_data(), sep = '\n')
-
-my_file = CSVFile('shampoo_sales.csv')
-print(my_file)
-print(*my_file.get_data(), sep = '\n')
-
-my_file = CSVFile('shampoo_sales_messed_up.csv')
-print(my_file)
-print(*my_file.get_data(), sep = '\n')
-
-my_file = CSVFile('file_vuoto.csv')
-print(my_file)
-#print(*my_file.get_data(), sep = '\n')
 """
 
-
-my_file = NumericalCSVFile('shampoo_sales.csv')
-#print(my_file.get_data())
-
-#divido i solo il numero di vendite
-just_data = [elem[1] for elem in my_file.get_data()]
-data_24_mesi = just_data[:24]
-data_ultimi_12_mesi = just_data[24:]
-print(data_ultimi_12_mesi)
-
-#ogetti modelli
-#vendite_shampoo = IncrementalModel()
-#print(vendite_shampoo.predict(just_data))
-#vendite_lol = FitIncrementalModel()
-
-#array di dati con la predict dell'incremental modello
-shampoo = data_24_mesi
-while len(shampoo) != len(just_data):
-    next_dato = IncrementalModel().predict(shampoo) 
-    shampoo.append(next_dato)
-
-print(shampoo)
-
-#array di dati con la predict del fit incremental model
-lol = data_24_mesi
-while len(lol) != len(just_data):
-    FitIncrementalModel().fit(lol)
-    next_dato = FitIncrementalModel().predict(lol)
-    lol.append(next_dato)
-
-print(lol)
-
-#gli errori medi
-print('valutazione incrementalmodel')
-errore_medio_shampoo = valutazione(data_ultimi_12_mesi, shampoo[24:])
-print(errore_medio_shampoo)
-
-print('valutazione FitIncrementalmodel')
-errore_medio_lol = valutazione(data_ultimi_12_mesi, lol[24:])
-print(errore_medio_lol)
-
-
-"""
-pyplot.plot(just_data + [vendite_shampoo.predict(just_data)], color = 'tab:red')
-pyplot.plot(just_data + [vendite_lol.predict(just_data)], color = 'tab:green')
-pyplot.plot(just_data, color = 'tab:blue')
-
-pyplot.show()
-"""
 
