@@ -263,6 +263,23 @@ class Model():
             #incremento medio
             incr_medio = sum(incrementi) / len(incrementi)
             return incr_medio
+
+    def valutazione(self, originale, predizioni):
+
+        if len(originale) != len(predizioni):
+            print('Errore: sono stati passati dei dati sbagliati nella valutazione\n')
+            return None
+        
+        else:
+            #devo calcolare l'erroe medio
+            errori_medi = []
+            #quindi prendo l'errore dato per dato
+            for i in range(len(originale)):
+                err = abs(originale[i] - predizioni[i])
+                errori_medi.append(err)
+
+            #e ci faccio la media
+            return sum(errori_medi) / len(errori_medi)
             
 
 class IncrementalModel(Model):
@@ -321,4 +338,23 @@ def valutazione(data_originale, data_predict):
         return None
 """
 
+"""
+my_file = NumericalCSVFile('shampoo_sales.csv')
+#print(my_file.get_data())
 
+#divido i solo il numero di vendite
+just_data = [elem[1] for elem in my_file.get_data()]
+predictions = []
+model = FitIncrementalModel()
+
+for i in range(3):
+    model.fit(just_data + predictions)
+    predictions.append(model.predict(just_data + predictions))
+
+
+pyplot.plot(just_data + predictions, color = 'tab:red')
+#pyplot.plot(just_data + [my_file.predict(just_data)], color = 'tab:green')
+pyplot.plot(just_data, color = 'tab:blue')
+
+pyplot.show()
+"""

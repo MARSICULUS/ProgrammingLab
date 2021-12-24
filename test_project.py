@@ -2,6 +2,7 @@ import unittest
 from project import CSVFile
 from project import FileVuoto
 from project import NumericalCSVFile
+from project import Model
 from project import IncrementalModel
 from project import FitIncrementalModel
 
@@ -83,9 +84,12 @@ class TestCSVFile(unittest.TestCase):
         self.assertEqual(NumericalCSVFile('file_prova_dati.csv').get_data(), data)
 
     #Model
-    def test_incremento_medio(self):
+    def test_model(self):
         dati = [50, 52, 60]
-        self.assertEqual(IncrementalModel().incremento_medio(dati), 5)
+        self.assertEqual(Model().incremento_medio(dati), 5)
+        origin_dati = [67, 72]
+        pred_dati = [65, 76]
+        self.assertEqual(Model().valutazione(origin_dati, pred_dati), 3)
 
     def test_incremental_model(self):
         dati = [50, 52, 60]
