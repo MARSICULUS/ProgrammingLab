@@ -9,7 +9,6 @@ class Diff():
         if ratio is None:
             raise ExamException('WTF dude')
         
-
         if type(ratio) is str:
             raise ExamException('La ratio non è un numero')
 
@@ -51,6 +50,7 @@ class Diff():
                 diff.append((dati[i + 1] - dati[i]) / self.ratio)
         
         return diff
+
 
 #test
 '''
