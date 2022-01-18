@@ -126,7 +126,7 @@ models = [increment_model, fit_increment_model]
 
 # Swicth per il plot (se messo a True bisogna chiudere la finestra del plot 
 # per far proseguire il programma dopo la valutazione del primo modello)
-plot = False
+plot = True
 
 # Valuto entrambi i modelli
 for model in models:

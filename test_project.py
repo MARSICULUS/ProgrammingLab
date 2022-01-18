@@ -87,9 +87,15 @@ class TestCSVFile(unittest.TestCase):
     def test_model(self):
         dati = [50, 52, 60]
         self.assertEqual(Model().incremento_medio(dati), 5)
+        shampoo_sales = [266.0, 145.9, 183.1, 119.3, 180.3, 168.5, 231.8, 224.5, 192.8, 122.9, 336.5, 185.9, 194.3, 149.5, 210.1, 273.3, 191.4, 287.0, 226.0, 303.6, 289.9, 421.6, 264.5, 342.3, 339.7, 440.4, 315.9, 439.3, 401.3, 437.4, 575.5, 407.6, 682.0, 475.3, 581.3, 646.9]
+        self.assertEqual(int(Model().incremento_medio(shampoo_sales)), 10)
         origin_dati = [67, 72]
         pred_dati = [65, 76]
         self.assertEqual(Model().valutazione(origin_dati, pred_dati), 3)
+        self.assertEqual(Model().valutazione(dati, dati), 0)
+        origin_dati = [8, 19, 31, 41, 50, 52, 60]
+        pred_dati = [10, 21, 33, 43, 48, 50, 58]
+        self.assertEqual(Model().valutazione(origin_dati, pred_dati), 2)
 
     def test_incremental_model(self):
         dati = [50, 52, 60]

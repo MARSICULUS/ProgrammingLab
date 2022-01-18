@@ -262,6 +262,7 @@ class Model():
             
             #incremento medio
             incr_medio = sum(incrementi) / len(incrementi)
+            print('incremento medio  = ', incr_medio)
             return incr_medio
 
     def valutazione(self, originale, predizioni):
@@ -275,6 +276,7 @@ class Model():
             errori_medi = []
             #quindi prendo l'errore dato per dato
             for i in range(len(originale)):
+                print('"{}" (pred) vs "{}" (real)'.format(int(predizioni[i]), int(originale[i])))
                 err = abs(originale[i] - predizioni[i])
                 errori_medi.append(err)
 
@@ -358,3 +360,25 @@ pyplot.plot(just_data, color = 'tab:blue')
 
 pyplot.show()
 """
+
+my_file = NumericalCSVFile('shampoo_sales.csv')
+just_data = [elem[1] for elem in my_file.get_data()]
+data_fit = just_data[:-12]
+data_origin = just_data[-12:]
+print(*data_fit, sep = '  ')
+print(*data_origin, sep = '  ')
+
+#modello senza fit
+modello_base = IncrementalModel()
+
+#prendo i primi 24 mesi del dataset
+#fanno la prdiction per 12 volte
+prediction_base = []
+for i in range(12):
+    prediction_base.append(modello_base.predict(data_fit + prediction_base))
+
+print(prediction_base)
+
+#valutazioni fra le prediction e dati reali
+errore_medio = modello_base.valutazione(data_origin, prediction_base)
+print(errore_medio)
