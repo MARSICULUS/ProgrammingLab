@@ -211,7 +211,6 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
                 mese.append(item[2])
         passeggieri.append(mese)
 
-    print(passeggieri)
 
     
     difference_year = last_year - first_year + 1
@@ -236,13 +235,4 @@ def compute_avg_monthly_difference(time_series, first_year, last_year):
             else:
                 result[i] = diff / counter
     
-
-    
     return result
-
-
-file = CSVTimeSeriesFile(name = 'dati.csv')
-print('get data:')
-print(file.get_data())
-print('.......')
-print(compute_avg_monthly_difference(file.get_data(), '0', '20000'))
