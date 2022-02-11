@@ -2,7 +2,7 @@ from datetime import datetime
 #from matplotlib import pyplot
 
 class FileVuoto(Exception):
-    pass
+    pass    
 
 """ 
 Classe CSVFile
