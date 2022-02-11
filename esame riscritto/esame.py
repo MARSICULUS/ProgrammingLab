@@ -10,10 +10,8 @@ class CSVFile:
         self.name = name
         
         #Controlo Se il nome è una stringa che finisce per .csv
-        #if type(name) == str and name[-4:] == '.csv':
-         #   t_input = True
-        #else:
-         #   raise ExamException('Errore: il tipo del file non è .csv')
+        if type(name) != str:
+           raise ExamException('Errore: il tipo del file non è .csv')
 
             
     #Presentazione del file
